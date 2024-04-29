@@ -1,5 +1,15 @@
 # React + Vite
 
+# React-router-dom V6
+
+basic and private routes in a very simple way including responsibilities in the same components and without using redux or useContext, passing data and receiving it through the components' props
+
+- Intrucctions:
+
+    npm i 
+
+    npm run dev
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

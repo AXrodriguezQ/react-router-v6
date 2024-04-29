@@ -1,34 +1,85 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
+import { Admin, Analyticst, Dashboard, Home, Landing } from "./pages"
+import { useState } from "react"
+import { ProtectedRoute } from "./components/ProtectedRoutes"
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+
+  const [ user, setUser ] = useState(null)
+
+  const login = () => {
+    // ? Request done
+
+    setUser({
+      id: 1,
+      name: "Alex",
+      permissions: [ 'analize' ],
+      roles: [ 'admin' ]
+    })
+
+  }
+
+  const logout = () => {
+    //? Request done
+
+    setUser(null)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <BrowserRouter>
+
+      <Navigation />
+
+      {
+        user? (
+          <button onClick={logout} >Logout</button>
+        ) : (
+          <button onClick={login} >Login</button>
+        )
+      }
+
+      <Routes>
+
+        <Route index element={<Landing />} />
+
+        <Route path="/landing" element={<Landing />} />
+        
+        <Route element={<ProtectedRoute isAllowed={!!user} />}>
+
+          <Route path="/home" element={<Home />} />
+
+          <Route path="/dashboard" element={<Dashboard />} />
+        
+        </Route>
+
+        <Route path="/analytics" element={
+          <ProtectedRoute isAllowed={!!user && user.permissions.includes('analize')} redirecTo="/home" >
+            <Analyticst />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/admin" element={
+          <ProtectedRoute isAllowed={!!user && user.roles.includes('admin')} redirecTo="/home" >
+            <Admin />
+          </ProtectedRoute>
+        } />
+
+      </Routes>
+    </BrowserRouter>
+  )
+}
+
+function Navigation () {
+  return (
+    <nav>
+      <ul>
+        <li><Link to="/">Landing</Link></li>
+        <li><Link to="/home">Home</Link></li>
+        <li><Link to="/dashboard">Dashboard</Link></li>
+        <li><Link to="/analytics">Analytics</Link></li>
+        <li><Link to="/admin">Admin</Link></li>
+      </ul>
+    </nav>
   )
 }
 
