@@ -4,11 +4,17 @@
 
 basic and private routes in a very simple way including responsibilities in the same components and without using redux or useContext, passing data and receiving it through the components' props
 
-- Intrucctions:
+## Instructions
 
-    npm i 
+```bash
+$ npm install
+```
 
-    npm run dev
+## Running the app
+
+```bash
+$ npm run start
+```
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
